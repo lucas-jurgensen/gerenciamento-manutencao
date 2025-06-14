@@ -7,6 +7,8 @@ import com.lucas.model.Equipamento;
 import java.util.Scanner;
 
 public class Menu {
+    private GerenciadorDeEquipamentos gerenciador = new GerenciadorDeEquipamentos();
+
     public void exibir() {
         Scanner sc = new Scanner(System.in);
         OrdemDeServico ordem = new OrdemDeServico();
@@ -14,6 +16,8 @@ public class Menu {
         while (true) {
             System.out.println("[1] - registrar computador");
             System.out.println("[2] - registrar ar condicionado");
+            System.out.println("[3] - listar computadores para manutenção");
+            System.out.println("[4] - listar ar condicionado para manutenção");
             System.out.println("[0] - sair do sistema");
             System.out.println("sua escolha: ");
 
@@ -25,30 +29,37 @@ public class Menu {
                 break;
             }
 
-            System.out.print("nome do equipamento: ");
-            String nome = sc.nextLine();
-
-            System.out.print("número de série: ");
-            String numeroSerie = sc.nextLine();
-
-            System.out.print("responsável: ");
-            String responsavel = sc.nextLine();
-
-            Equipamento equipamento = null;
-
             switch (opcao) {
                 case 1 -> {
-                    System.out.println("sistema operacional: ");
-                    String so = sc.nextLine();
-
-                    equipamento = new Computador(nome, numeroSerie, responsavel, so);
+                    Computador comp = lerDadosComputador(sc);
+                    if (gerenciador.existeComputador(comp.getNumeroSerie())) {
+                        System.out.println("Computador já registrado para manutenção");
+                    } else {
+                        gerenciador.adicionarComputador(comp);
+                        System.out.println("Tipo de manutenção: ");
+                        String manutencao = sc.nextLine();
+                        System.out.println(ordem.registrar(comp, manutencao));
+                    }
                 }
 
                 case 2 -> {
-                    System.out.println("tipo de gás do ar condicionado: ");
-                    String tipoGas = sc.nextLine();
+                    ArCondicionado arc = lerDadosArCondicionado(sc);
+                    if (gerenciador.existeArCondicionado(arc.getNumeroSerie())) {
+                        System.out.println("Ar condicionado já registrado para manuteção");
+                    } else {
+                        gerenciador.adicionarArCondicionado(arc);
+                        System.out.println("Tipo de manutenção: ");
+                        String manutencao = sc.nextLine();
+                        System.out.println(ordem.registrar(arc, manutencao));
+                    }
+                }
 
-                    equipamento = new ArCondicionado(nome, numeroSerie, responsavel, tipoGas);
+                case 3 -> {
+                    gerenciador.listarComputadoresManutencao();
+                }
+
+                case 4 -> {
+                    gerenciador.listarArCondicionadoManutencao();
                 }
 
                 default -> {
@@ -57,15 +68,31 @@ public class Menu {
                 }
 
             }
-
-            System.out.println("tipo de manutenção: ");
-            String tipoManutecao = sc.nextLine();
-
-            String resultado = ordem.registrar(equipamento, tipoManutecao);
-            System.out.println("registro realizado");
-            System.out.println(resultado);
         }
-
         sc.close();
+    }
+
+    private Computador lerDadosComputador(Scanner sc) {
+        System.out.println("Nome do computador: ");
+        String nome = sc.nextLine();
+        System.out.println("Número de série: ");
+        String numeroSerie = sc.nextLine();
+        System.out.println("Responsável: ");
+        String responsavel = sc.nextLine();
+        System.out.println("Sistema operacional: ");
+        String so = sc.nextLine();
+        return new Computador(nome, numeroSerie, responsavel, so);
+    }
+
+    private ArCondicionado lerDadosArCondicionado(Scanner sc) {
+        System.out.println("Nome do Ar condicionado: ");
+        String nome = sc.nextLine();
+        System.out.println("Número de série: ");
+        String numeroSerie = sc.nextLine();
+        System.out.println("Responsável: ");
+        String responsavel = sc.nextLine();
+        System.out.println("Tipo de gás: ");
+        String tipoGas = sc.nextLine();
+        return new ArCondicionado(nome, numeroSerie, responsavel, tipoGas);
     }
 }
