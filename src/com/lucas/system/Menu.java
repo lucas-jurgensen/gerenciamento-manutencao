@@ -18,6 +18,7 @@ public class Menu {
             System.out.println("[2] - registrar ar condicionado");
             System.out.println("[3] - listar computadores para manutenção");
             System.out.println("[4] - listar ar condicionado para manutenção");
+            System.out.println("[5] - listar todos equipamentos para manutenção");
             System.out.println("[0] - sair do sistema");
             System.out.println("sua escolha: ");
 
@@ -60,6 +61,10 @@ public class Menu {
 
                 case 4 -> {
                     gerenciador.listarArCondicionadoManutencao();
+                }
+
+                case 5 -> {
+                    gerenciador.listarTodosEquipamentosManutencao();
                 }
 
                 default -> {

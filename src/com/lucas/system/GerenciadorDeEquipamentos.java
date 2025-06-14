@@ -76,4 +76,16 @@ public class GerenciadorDeEquipamentos {
         arCondicionadoList.add(novoArCondicionado);
         return true;
     }
+
+    protected void listarTodosEquipamentosManutencao() {
+        if (arCondicionadoList.isEmpty() && computadorList.isEmpty()) {
+            System.out.println("Não há equipamentos registrados para manutenção");
+            return;
+        }
+
+        System.out.println("Computadores:");
+        listarComputadoresManutencao();
+        System.out.println("Ar Condicionado:");
+        listarArCondicionadoManutencao();
+    }
 }
